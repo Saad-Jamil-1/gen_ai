@@ -1,0 +1,68 @@
+<<<<<<< HEAD
+# Use a Python image that includes necessary system libraries for Tkinter/GUI
+# For a GUI app, we must use a base image with X11 components
+FROM python:3.11-bullseye
+
+# Set environment variable for non-interactive commands
+ENV DEBIAN_FRONTEND noninteractive
+
+# 1. Install necessary system dependencies for Tkinter
+# Note: For many CI/CD environments, this part is often skipped 
+# in favor of a simpler command-line app, but we need it for your GUI.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    tk \
+    libx11-6 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the Python code and any requirements file (if you had one)
+COPY chatbot_gui.py /app/
+
+# Install the necessary Python libraries (google-genai)
+# Since your key is hardcoded, we don't need a requirements.txt, 
+# but this is how you'd normally install dependencies:
+RUN pip install google-genai
+
+# Command to run the application
+# Use python -m tkinter to check if Tkinter is available (optional test)
+# Since this is a GUI, running it via ENTRYPOINT in a typical CI/CD 
+# environment (without a visible desktop) won't work perfectly, but 
+# this line defines the container's main execution command.
+=======
+# Use a Python image that includes necessary system libraries for Tkinter/GUI
+# For a GUI app, we must use a base image with X11 components
+FROM python:3.11-bullseye
+
+# Set environment variable for non-interactive commands
+ENV DEBIAN_FRONTEND noninteractive
+
+# 1. Install necessary system dependencies for Tkinter
+# Note: For many CI/CD environments, this part is often skipped 
+# in favor of a simpler command-line app, but we need it for your GUI.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    tk \
+    libx11-6 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the Python code and any requirements file (if you had one)
+COPY chatbot_gui.py /app/
+
+# Install the necessary Python libraries (google-genai)
+# Since your key is hardcoded, we don't need a requirements.txt, 
+# but this is how you'd normally install dependencies:
+RUN pip install google-genai
+
+# Command to run the application
+# Use python -m tkinter to check if Tkinter is available (optional test)
+# Since this is a GUI, running it via ENTRYPOINT in a typical CI/CD 
+# environment (without a visible desktop) won't work perfectly, but 
+# this line defines the container's main execution command.
+>>>>>>> fe5b7b4d1ab83a894567fdd8d720be1b422f5b96
+ENTRYPOINT ["python", "chatbot_gui.py"]
